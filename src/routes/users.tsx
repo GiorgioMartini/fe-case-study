@@ -1,4 +1,4 @@
-import { createFileRoute, redirect } from '@tanstack/react-router';
+import { createFileRoute, redirect, Outlet } from '@tanstack/react-router';
 import { useAuthStore } from '../store/auth';
 
 export const Route = createFileRoute('/users')({
@@ -15,17 +15,11 @@ export const Route = createFileRoute('/users')({
       });
     }
   },
-  component: UsersListPage,
+  component: UsersLayout,
 });
 
-function UsersListPage() {
-  // TODO: Fetch users from API using TanStack Query
-  // TODO: Display users in a table using shadcn/ui components
-  // TODO: Add actions for edit and delete
-  return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Users</h1>
-      <p className="text-muted-foreground">Users list coming soon...</p>
-    </div>
-  );
+function UsersLayout() {
+  // This component now acts as a layout for all /users/* routes
+  // The <Outlet /> will render the appropriate child route
+  return <Outlet />;
 }
