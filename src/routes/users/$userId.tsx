@@ -1,9 +1,13 @@
 import { createFileRoute, useNavigate, redirect } from '@tanstack/react-router';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useUser, useUpdateUser } from '../../hooks/useUsers';
-import { userSchema, type UserFormData } from '../../lib/validations';
+import {
+  userSchema,
+  type UserFormData,
+  getRoleOptions,
+} from '../../lib/validations';
 import {
   FormItem,
   FormLabel,
@@ -11,12 +15,15 @@ import {
   FormMessage,
 } from '../../components/ui/form';
 import { Input } from '../../components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../../components/ui/select';
 import { Button } from '../../components/ui/button';
 import { useAuthStore } from '../../store/auth';
-
-// export const Route = createFileRoute('/users/$userId')({
-//   component: UserEditPage,
-// });
 
 export const Route = createFileRoute('/users/$userId')({
   beforeLoad: async ({ location }) => {
@@ -45,6 +52,7 @@ function UserEditPage() {
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
     reset,
@@ -116,11 +124,27 @@ function UserEditPage() {
         <FormItem>
           <FormLabel htmlFor="role">Role</FormLabel>
           <FormControl>
-            <Input
-              id="role"
-              {...register('role')}
-              placeholder="Enter user role (e.g., admin, user)"
-              disabled={updateUserMutation.isPending}
+            <Controller
+              name="role"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  disabled={updateUserMutation.isPending}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {getRoleOptions().map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
             />
           </FormControl>
           {errors.role && <FormMessage>{errors.role.message}</FormMessage>}

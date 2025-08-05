@@ -41,6 +41,14 @@ router.post('/create', (req, res) => {
     return res.status(400).json({ message: 'Username must be a real name' });
   }
 
+  // Validate role
+  const validRoles = ['admin', 'user'];
+  if (!role || !validRoles.includes(role)) {
+    return res
+      .status(400)
+      .json({ message: 'Role must be either admin or user' });
+  }
+
   const newUser = {
     id: Date.now(),
     username,
@@ -57,6 +65,15 @@ router.put('/:id', (req, res) => {
   const index = users.findIndex((u) => u.id === id);
 
   if (index === -1) return res.status(404).json({ message: 'User not found' });
+
+  // Validate role if provided
+  const { role } = req.body;
+  const validRoles = ['admin', 'user'];
+  if (role && !validRoles.includes(role)) {
+    return res
+      .status(400)
+      .json({ message: 'Role must be either admin or user' });
+  }
 
   users[index] = { ...users[index], ...req.body };
   res.json(users[index]);
