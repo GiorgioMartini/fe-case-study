@@ -46,10 +46,11 @@ function UserEditPage() {
   const navigate = useNavigate();
   const { userId } = Route.useParams();
 
-  // React Query hooks
+  // React Query hooks - called first, always
   const { data: user, isLoading, isError, error: fetchError } = useUser(userId);
   const updateUserMutation = useUpdateUser();
 
+  // Form setup - called always, with empty defaults initially
   const {
     register,
     control,
@@ -58,9 +59,13 @@ function UserEditPage() {
     reset,
   } = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
+    defaultValues: {
+      username: '',
+      role: '',
+    },
   });
 
-  // Pre-populate form when user data is loaded
+  // Simple: reset form when user data loads
   useEffect(() => {
     if (user) {
       reset({
@@ -127,24 +132,35 @@ function UserEditPage() {
             <Controller
               name="role"
               control={control}
-              render={({ field }) => (
-                <Select
-                  disabled={updateUserMutation.isPending}
-                  value={field.value}
-                  onValueChange={field.onChange}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {getRoleOptions().map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
+              render={({ field }) => {
+                // Only render Select after user data is loaded and field has value
+                if (!user || !field.value) {
+                  return (
+                    <div className="flex h-9 w-full items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm text-muted-foreground">
+                      Select a role
+                    </div>
+                  );
+                }
+
+                return (
+                  <Select
+                    disabled={updateUserMutation.isPending}
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {getRoleOptions().map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                );
+              }}
             />
           </FormControl>
           {errors.role && <FormMessage>{errors.role.message}</FormMessage>}
