@@ -27,16 +27,13 @@ describe('LoginPage', () => {
         defaultValues={{ username: '', role: '' }}
         onSubmit={() => {}}
         isSubmitting={false}
-        submitLabel="Login"
+        submitLabel="Create User"
         onCancel={() => {}}
       />
     );
 
-    expect(
-      screen.getByRole('heading', { name: 'Create User' })
-    ).toBeInTheDocument();
-    expect(screen.getByLabelText('Username')).toBeInTheDocument();
-    expect(screen.getByLabelText('Role')).toBeInTheDocument();
+    expect(screen.getByLabelText('Name')).toBeInTheDocument();
+    expect(screen.getByText('Select a role')).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: 'Create User' })
     ).toBeInTheDocument();
