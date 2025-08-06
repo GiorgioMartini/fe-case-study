@@ -5,7 +5,6 @@ import { UsersList } from '../../components/UsersList';
 
 export const Route = createFileRoute('/users/')({
   beforeLoad: async ({ location }) => {
-    // Check if user is authenticated by checking if token exists
     const { token } = useAuthStore.getState();
     if (!token) {
       throw redirect({

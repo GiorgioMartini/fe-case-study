@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UsersCreateRouteImport } from './routes/users-create'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LayoutRouteImport } from './routes/_layout'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersIndexRouteImport } from './routes/users/index'
 import { Route as UsersUserIdRouteImport } from './routes/users/$userId'
 
@@ -29,6 +30,11 @@ const LayoutRoute = LayoutRouteImport.update({
   id: '/_layout',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UsersIndexRoute = UsersIndexRouteImport.update({
   id: '/users/',
   path: '/users/',
@@ -41,12 +47,14 @@ const UsersUserIdRoute = UsersUserIdRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/users-create': typeof UsersCreateRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/users': typeof UsersIndexRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/users-create': typeof UsersCreateRoute
   '/users/$userId': typeof UsersUserIdRoute
@@ -54,6 +62,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/_layout': typeof LayoutRoute
   '/login': typeof LoginRoute
   '/users-create': typeof UsersCreateRoute
@@ -62,11 +71,12 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/login' | '/users-create' | '/users/$userId' | '/users'
+  fullPaths: '/' | '/login' | '/users-create' | '/users/$userId' | '/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/users-create' | '/users/$userId' | '/users'
+  to: '/' | '/login' | '/users-create' | '/users/$userId' | '/users'
   id:
     | '__root__'
+    | '/'
     | '/_layout'
     | '/login'
     | '/users-create'
@@ -75,6 +85,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   LayoutRoute: typeof LayoutRoute
   LoginRoute: typeof LoginRoute
   UsersCreateRoute: typeof UsersCreateRoute
@@ -105,6 +116,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/users/': {
       id: '/users/'
       path: '/users'
@@ -123,6 +141,7 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   LayoutRoute: LayoutRoute,
   LoginRoute: LoginRoute,
   UsersCreateRoute: UsersCreateRoute,
