@@ -28,14 +28,17 @@ function HomePage() {
         {isLoggedIn ? (
           // Show "Users" button if logged in
           <Link to="/users">
-            <Button size="lg" className="text-lg px-8 py-3">
+            <Button
+              size="lg"
+              className="bg-yellow-400 hover:bg-yellow-500 text-lg px-8 py-3 !text-black cursor-pointer"
+            >
               Go to Users
             </Button>
           </Link>
         ) : (
           // Show "Login" button if not logged in
           <Link to="/login">
-            <Button size="lg" className="text-lg px-8 py-3">
+            <Button size="lg" className="bg-yellow-400 text-lg px-8 py-3">
               Login
             </Button>
           </Link>

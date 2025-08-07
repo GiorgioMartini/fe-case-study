@@ -146,7 +146,7 @@ export function UserForm({
         {/* Action Buttons */}
         <div className="flex gap-4 pt-6 border-t border-gray-100">
           <Button
-            className="bg-yellow-400 hover:bg-yellow-500 !text-black font-semibold h-12 px-8 text-lg transition-all shadow-md hover:shadow-lg"
+            className="bg-yellow-400 hover:bg-yellow-500 !text-black font-semibold h-12 px-8 text-lg transition-all shadow-md hover:shadow-lg cursor-pointer"
             type="submit"
             disabled={isSubmitting}
           >
@@ -158,7 +158,7 @@ export function UserForm({
             variant="outline"
             onClick={onCancel}
             disabled={isSubmitting}
-            className="h-12 px-8 text-lg font-medium border-2 border-gray-300 hover:bg-gray-50 transition-all"
+            className="h-12 px-8 text-lg font-medium border-2 border-gray-300 hover:bg-gray-50 transition-all cursor-pointer"
           >
             {cancelLabel}
           </Button>

@@ -51,7 +51,7 @@ export function UsersList({ users }: UsersListProps) {
           </p>
         </div>
         <Link to="/users-create">
-          <Button className="gap-2 bg-yellow-400 hover:bg-yellow-500 transition-colors shadow-md font-medium !text-black">
+          <Button className="gap-2 bg-yellow-400 hover:bg-yellow-500 transition-colors shadow-md font-medium !text-black cursor-pointer">
             <Plus className="h-4 w-4" />
             Add User
           </Button>
@@ -121,7 +121,7 @@ export function UsersList({ users }: UsersListProps) {
                     <Button
                       variant="outline"
                       size="sm"
-                      className={`w-full gap-2 transition-colors font-medium`}
+                      className={`w-full gap-2 transition-colors font-medium cursor-pointer`}
                     >
                       <Eye className="h-4 w-4" />
                       Edit Users
