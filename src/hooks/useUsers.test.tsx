@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { renderHook, screen, userEvent, waitFor } from '@testing-library/react';
+import { renderHook, waitFor } from '@testing-library/react';
 import { api } from '../api';
 import { useUsers, useUser, useCreateUser, useUpdateUser } from './useUsers';
 import { createHookWrapper } from '../test/test-utils';
