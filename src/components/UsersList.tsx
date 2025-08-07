@@ -26,17 +26,17 @@ export function UsersList({ users }: UsersListProps) {
       .substring(0, 2);
   };
 
-  // Helper function to get role color
-  const getRoleColor = (role: string) => {
+  const getRoleColors = (role: string) => {
     switch (role.toLowerCase()) {
       case 'admin':
-        return 'destructive';
-      case 'moderator':
-        return 'default';
+        return {
+          badge: 'bg-red-100 text-red-800 border-red-300',
+        };
       case 'user':
-        return 'secondary';
       default:
-        return 'outline';
+        return {
+          badge: 'bg-gray-100 text-gray-800 border-gray-300',
+        };
     }
   };
 
@@ -51,7 +51,7 @@ export function UsersList({ users }: UsersListProps) {
           </p>
         </div>
         <Link to="/users-create">
-          <Button className="gap-2">
+          <Button className="gap-2 bg-yellow-400 hover:bg-yellow-500 transition-colors shadow-md font-medium !text-black">
             <Plus className="h-4 w-4" />
             Add User
           </Button>
@@ -70,7 +70,7 @@ export function UsersList({ users }: UsersListProps) {
               </p>
             </div>
             <Link to="/users-create">
-              <Button className="gap-2">
+              <Button className="gap-2 bg-yellow-400 hover:bg-yellow-500 transition-colors shadow-md font-medium !text-black">
                 <Plus className="h-4 w-4" />
                 Create User
               </Button>
@@ -80,16 +80,21 @@ export function UsersList({ users }: UsersListProps) {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {users.map((user) => (
-            <Card key={user.id} className="hover:shadow-md transition-shadow">
+            <Card
+              key={user.id}
+              className="bg-yellow-400 hover:bg-yellow-500 hover:shadow-lg transition-all duration-200 border-0 shadow-sm"
+            >
               <CardHeader className="flex flex-row items-center space-y-0 space-x-4 pb-4">
                 <Avatar className="h-12 w-12">
-                  <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                  <AvatarFallback className="bg-black text-white font-semibold shadow-sm">
                     {getInitials(user.username)}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 space-y-1">
-                  <CardTitle className="text-lg">{user.username}</CardTitle>
-                  <CardDescription className="text-sm">
+                  <CardTitle className="text-lg font-bold text-black">
+                    {user.username}
+                  </CardTitle>
+                  <CardDescription className="text-sm text-gray-800 font-medium">
                     User ID: {user.id}
                   </CardDescription>
                 </div>
@@ -97,10 +102,10 @@ export function UsersList({ users }: UsersListProps) {
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="space-y-1">
-                    <p className="text-sm font-medium">Role</p>
+                    <p className="text-sm font-medium text-black">Role</p>
                     <Badge
-                      variant={getRoleColor(user.role)}
-                      className="capitalize"
+                      variant="secondary"
+                      className={`capitalize font-medium ${getRoleColors(user.role).badge}`}
                     >
                       {user.role}
                     </Badge>
@@ -116,10 +121,10 @@ export function UsersList({ users }: UsersListProps) {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="w-full gap-2"
+                      className={`w-full gap-2 transition-colors font-medium`}
                     >
                       <Eye className="h-4 w-4" />
-                      View Details
+                      Edit Users
                     </Button>
                   </Link>
                 </div>
@@ -133,24 +138,27 @@ export function UsersList({ users }: UsersListProps) {
       {users.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Summary</CardTitle>
+            <CardTitle className="text-lg font-bold flex items-center gap-2">
+              <div className="w-1 h-6 bg-yellow-400 rounded-full"></div>
+              Summary
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">
+                <div className="text-3xl font-bold text-yellow-600">
                   {users.length}
                 </div>
                 <div className="text-sm text-muted-foreground">Total Users</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-destructive">
+                <div className="text-3xl font-bold text-red-600">
                   {users.filter((u) => u.role.toLowerCase() === 'admin').length}
                 </div>
                 <div className="text-sm text-muted-foreground">Admins</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-orange-600">
+                <div className="text-3xl font-bold text-yellow-600">
                   {
                     users.filter((u) => u.role.toLowerCase() === 'moderator')
                       .length
@@ -159,7 +167,7 @@ export function UsersList({ users }: UsersListProps) {
                 <div className="text-sm text-muted-foreground">Moderators</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">
+                <div className="text-3xl font-bold text-gray-600">
                   {users.filter((u) => u.role.toLowerCase() === 'user').length}
                 </div>
                 <div className="text-sm text-muted-foreground">Users</div>
