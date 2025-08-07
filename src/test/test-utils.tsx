@@ -2,8 +2,26 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import type { RenderOptions } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  RouterProvider,
+  createRouter,
+  createRootRoute,
+  createMemoryHistory,
+} from '@tanstack/react-router';
 
-// Simple test wrapper with just query context - router hooks are mocked
+const createTestRouter = () => {
+  const rootRoute = createRootRoute({
+    component: () => <div>Test</div>,
+  });
+
+  return createRouter({
+    routeTree: rootRoute,
+    history: createMemoryHistory({
+      initialEntries: ['/'],
+    }),
+  });
+};
+
 const createTestWrapper = () => {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
@@ -28,3 +46,21 @@ export {
 } from '@testing-library/react';
 export { default as userEvent } from '@testing-library/user-event';
 export { customRender as render };
+
+export const createHookWrapper = () => {
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+  });
+
+  const router = createTestRouter();
+
+  // Initialize the router
+  router.load();
+
+  return ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      {children}
+    </QueryClientProvider>
+  );
+};

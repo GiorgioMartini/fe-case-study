@@ -6,6 +6,7 @@ import { UsersList } from '../../components/UsersList';
 export const Route = createFileRoute('/users/')({
   beforeLoad: async ({ location }) => {
     const { token } = useAuthStore.getState();
+    console.log('token =>', token);
     if (!token) {
       throw redirect({
         to: '/login',
